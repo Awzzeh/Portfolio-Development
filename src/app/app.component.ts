@@ -13,5 +13,19 @@ import * as moment from 'moment';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  
+
+  @ViewChild('live')
+  public live: ElementRef;
+
+  constructor(private zone: NgZone, private renderer: Renderer2) {
+    this.zone.runOutsideAngular(() => {
+      setInterval(() => {
+        this.renderer.setProperty(
+          this.live.nativeElement,
+          'textContent',
+          moment().format('h:mm:ss A')
+        );
+      }, 500);
+    });
+  }
 }
